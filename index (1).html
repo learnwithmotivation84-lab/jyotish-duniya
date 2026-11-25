@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#21123d">
+<title>Jyotish Duniya | Astrology, Kundli & Palmistry</title>
+<style>
+:root{--bg:#100b1d;--panel:#1d1530;--panel2:#281d40;--gold:#f4c66a;--cream:#fff6e5;--muted:#c7bad8;--line:#49365f;--pink:#e9a5c5}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 15% 0%,#38204f 0,transparent 35%),var(--bg);color:var(--cream);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.6}
+header{position:sticky;top:0;z-index:10;background:#140e22ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{max-width:1150px;margin:auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-weight:800;color:var(--gold);letter-spacing:.5px;font-size:1.15rem}.brand small{display:block;color:var(--cream);font-weight:500;font-size:.75rem}
+nav{display:flex;gap:7px;flex-wrap:wrap}nav a,.langbtn{color:var(--cream);text-decoration:none;padding:7px 10px;border-radius:9px;font-size:.88rem;border:1px solid transparent}nav a:hover,.langbtn:hover{border-color:var(--gold);color:var(--gold)}button,.btn{cursor:pointer;border:0;border-radius:11px;padding:11px 16px;background:linear-gradient(135deg,var(--gold),#e89c55);color:#24142e;font-weight:800;text-decoration:none;display:inline-block}
+main{max-width:1150px;margin:auto;padding:25px 18px 60px}.hero{text-align:center;padding:55px 18px 35px}.eyebrow{color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-size:.78rem}.hero h1{font-size:clamp(2.1rem,6vw,4rem);line-height:1.1;margin:10px 0}.hero p{max-width:700px;margin:12px auto 22px;color:var(--muted)}
+section{scroll-margin-top:90px;margin:30px 0}.section-title{font-size:1.65rem;margin:0 0 5px}.sub{color:var(--muted);margin:0 0 18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.card{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:0 10px 30px #0002}.card h3{margin:0 0 6px;color:var(--gold)}.card p{margin:5px 0;color:var(--muted)}.zodiac{cursor:pointer;transition:.2s}.zodiac:hover{transform:translateY(-3px);border-color:var(--gold)}.zodiac strong{font-size:1.05rem}.emoji{font-size:1.7rem;display:block}
+.panel{background:var(--panel);border:1px solid var(--line);padding:20px;border-radius:17px}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px}label{display:block;color:var(--muted);font-size:.9rem;margin-bottom:5px}input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#120d20;color:var(--cream);font:inherit}input[type=file]{padding:9px}button.secondary{background:var(--panel2);color:var(--cream);border:1px solid var(--line)}.result{margin-top:16px;padding:15px;border-radius:12px;background:#120d20;border:1px solid var(--line);white-space:pre-line;min-height:45px}.notice{font-size:.86rem;color:#d8c9e5;background:#2b1d39;border-left:3px solid var(--gold);padding:12px 14px;border-radius:8px;margin-top:15px}
+.palm-preview{max-width:280px;max-height:280px;object-fit:contain;border-radius:12px;display:none;margin-top:12px;border:1px solid var(--line)}
+footer{text-align:center;padding:25px;color:var(--muted);border-top:1px solid var(--line)}.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:4px 10px;color:var(--gold);font-size:.8rem}
+@media(max-width:600px){.nav{justify-content:center}nav{justify-content:center}nav a{font-size:.78rem;padding:6px}.hero{padding-top:35px}}
+</style>
+</head>
+<body>
+<header><div class="nav">
+  <div class="brand">✦ JYOTISH DUNIYA <small>ज्योतिष दुनिया</small></div>
+  <nav>
+    <a href="#home">Home</a><a href="#rashifal">Rashifal</a><a href="#kundli">Kundli</a><a href="#marriage">Marriage</a><a href="#matching">Matching</a><a href="#palm">Palm</a><a href="#future">Future</a><a href="#more">More</a>
+  </nav>
+</div></header>
+<main>
+<section class="hero" id="home">
+  <div class="eyebrow">Wisdom • Tradition • Self-reflection</div>
+  <h1>Discover Jyotish Duniya</h1>
+  <p>Your astrology and self-discovery corner. Explore zodiac readings, birth details, relationship compatibility, palmistry, numerology and the traditions of Panchang.</p>
+  <a class="btn" href="#rashifal">Explore Your Horoscope</a>
+  <p><span class="pill">Hindi + English friendly</span> <span class="pill">Mobile responsive</span> <span class="pill">Single-file website</span></p>
+</section>
+
+<section id="rashifal">
+<h2 class="section-title">☀️ Daily Rashifal – 12 Zodiac Signs</h2><p class="sub">Choose a sign to read a general daily reflection.</p>
+<div class="grid" id="zodiacGrid"></div><div class="result" id="rashiResult">Select your zodiac sign above.</div>
+</section>
+
+<section id="kundli">
+<h2 class="section-title">🪷 Janam Kundli / Birth Details</h2><p class="sub">Enter your birth information to prepare a personal profile.</p>
+<div class="panel"><div class="formgrid">
+<div><label for="birthName">Name</label><input id="birthName" placeholder="Your name"></div>
+<div><label for="birthDate">Date of birth</label><input id="birthDate" type="date"></div>
+<div><label for="birthTime">Birth time</label><input id="birthTime" type="time"></div>
+<div><label for="birthPlace">Birth place</label><input id="birthPlace" placeholder="City, State, Country"></div>
+</div><p><button onclick="makeBirthProfile()">Create birth profile</button></p><div class="result" id="kundliResult">Your entered details will appear here.</div>
+<div class="notice">This starter version stores no data and does not calculate a real Vedic birth chart. Accurate Lagna, planetary degrees, houses, Nakshatra and Dasha require a verified ephemeris/astrology calculation service.</div></div>
+</section>
+
+<section id="marriage">
+<h2 class="section-title">💍 Marriage & Relationship Guidance</h2><p class="sub">Explore traditional topics and practical questions for reflection.</p>
+<div class="panel"><div class="formgrid">
+<div><label for="maritalStatus">Current relationship status</label><select id="maritalStatus"><option>Single</option><option>In a relationship</option><option>Engaged</option><option>Married</option></select></div>
+<div><label for="marriageType">What would you like to explore?</label><select id="marriageType"><option>Marriage readiness</option><option>Love marriage</option><option>Arranged marriage</option><option>Communication and compatibility</option><option>Family expectations</option></select></div>
+</div><p><button onclick="marriageGuide()">Show guidance</button></p><div class="result" id="marriageResult">Choose a topic to see guidance.</div>
+<div class="notice">No website can reliably guarantee the age, date or certainty of marriage. Treat astrology as cultural or entertainment content, not as a decision-maker for marriage.</div></div>
+</section>
+
+<section id="matching">
+<h2 class="section-title">❤️ Kundli Matching / Guna Milan</h2><p class="sub">Enter both people's details to create a compatibility discussion guide.</p>
+<div class="panel"><div class="formgrid">
+<div><label for="personOne">Person 1 name</label><input id="personOne" placeholder="Name"></div>
+<div><label for="personTwo">Person 2 name</label><input id="personTwo" placeholder="Name"></div>
+<div><label for="signOne">Person 1 zodiac sign</label><select id="signOne"></select></div>
+<div><label for="signTwo">Person 2 zodiac sign</label><select id="signTwo"></select></div>
+</div><p><button onclick="matchGuide()">Explore compatibility</button></p><div class="result" id="matchResult">Your compatibility guide will appear here.</div>
+<div class="notice">This is not an Ashtakoot score or actual Kundli Milan. Traditional Guna Milan needs correctly calculated Moon Nakshatra and other birth-chart factors. A relationship also depends on respect, consent, values and communication.</div></div>
+</section>
+
+<section id="palm">
+<h2 class="section-title">✋ Palm Reading / Hast Rekha</h2><p class="sub">Upload a clear palm photo to preview it and learn about traditional palmistry.</p>
+<div class="panel"><label for="palmPhoto">Choose palm photo</label><input id="palmPhoto" type="file" accept="image/*" onchange="previewPalm(event)"><img id="palmPreview" class="palm-preview" alt="Palm photo preview">
+<div class="grid" style="margin-top:15px">
+<div class="card"><h3>❤️ Heart line</h3><p>Traditionally associated with emotions and relationships.</p></div>
+<div class="card"><h3>🧠 Head line</h3><p>Traditionally associated with thinking and decision-making.</p></div>
+<div class="card"><h3>🌱 Life line</h3><p>Traditionally associated with vitality and life changes; it does not tell lifespan.</p></div>
+<div class="card"><h3>⭐ Fate line</h3><p>Traditionally interpreted in relation to work and life direction.</p></div>
+</div><div class="notice">The image preview stays in your browser. This page does not send the photo to an AI palm reader or produce a verified reading. Palmistry is not scientifically established.</div></div>
+</section>
+
+<section id="future">
+<h2 class="section-title">🔮 Future & Life Guidance</h2><p class="sub">Select an area for a balanced reflection, not a fixed prediction.</p>
+<div class="panel"><div class="formgrid"><div><label for="futureTopic">Area</label><select id="futureTopic"><option>Career and education</option><option>Money and savings</option><option>Love and family</option><option>Health and wellbeing</option><option>Personal growth</option><option>Travel and new experiences</option></select></div></div><p><button onclick="futureGuide()">Get reflection</button></p><div class="result" id="futureResult">Your reflection will appear here.</div></div>
+</section>
+
+<section id="more">
+<h2 class="section-title">✨ More Astrology & Spiritual Tools</h2><p class="sub">Traditional topics and useful self-reflection tools.</p>
+<div class="grid">
+<div class="card"><h3>🔢 Numerology</h3><p>Explore a basic life-path number from your date of birth.</p><label for="numDate">Date of birth</label><input id="numDate" type="date"><p><button onclick="numerology()">Calculate number</button></p><div class="result" id="numResult"></div></div>
+<div class="card"><h3>🎨 Lucky Details</h3><p>Choose a zodiac sign for a playful lucky colour and number.</p><label for="luckySign">Zodiac sign</label><select id="luckySign"></select><p><button onclick="luckyDetails()">Show details</button></p><div class="result" id="luckyResult"></div></div>
+<div class="card"><h3>🗓️ Panchang</h3><p>Learn about the five traditional Panchang elements: Tithi, Vara, Nakshatra, Yoga and Karana.</p><p><span class="pill">Tithi</span> <span class="pill">Vara</span> <span class="pill">Nakshatra</span> <span class="pill">Yoga</span> <span class="pill">Karana</span></p><p>Local sunrise and precise Panchang require date and location calculations.</p></div>
+<div class="card"><h3>🪐 Dasha & Planetary Transit</h3><p>Vimshottari Dasha and Gochar are interpreted from a calculated birth chart and current planetary positions.</p><p>Connect a reliable astrology calculation API to enable accurate charts.</p></div>
+<div class="card"><h3>🔥 Dosha Information</h3><p>Read about Manglik Dosha, Kaal Sarp Dosha, Pitra Dosha and traditional remedies with balanced context.</p><p>Do not make expensive or fearful decisions based only on dosha claims.</p></div>
+<div class="card"><h3>💎 Gemstone Guide</h3><p>Learn the traditional associations of gemstones and planets. Avoid buying costly stones based on guaranteed-result claims.</p></div>
+<div class="card"><h3>🌙 Dream Meanings</h3><p>Reflect on common dream themes. Dreams do not reliably predict future events.</p></div>
+<div class="card"><h3>👶 Baby Names</h3><p>Explore names by meaning, language, starting letter or family preference. Nakshatra-based syllables require a verified birth calculation.</p></div>
+<div class="card"><h3>📅 Festivals & Muhurat</h3><p>Show festival dates and auspicious timings after connecting a trusted regional calendar/Panchang source.</p></div>
+</div>
+</section>
+
+<section><div class="notice"><strong>Important:</strong> Jyotish Duniya is an educational and entertainment website. Astrology, numerology and palmistry are traditional belief systems, not scientifically proven ways to predict events. Do not use them as substitutes for medical, legal, financial or relationship advice. Never share sensitive personal information unnecessarily.</div></section>
+</main>
+<footer>© <span id="year"></span> Jyotish Duniya · Made with ✦</footer>
+<script>
+const signs=[
+{name:"Aries",hi:"मेष",emoji:"♈",colour:"Red",number:9,reading:"Take initiative, but pause before reacting. A small practical step can help you move forward."},
+{name:"Taurus",hi:"वृषभ",emoji:"♉",colour:"Green",number:6,reading:"Choose steady progress over quick results. Give time to comfort, budgeting and close relationships."},
+{name:"Gemini",hi:"मिथुन",emoji:"♊",colour:"Yellow",number:5,reading:"A conversation or new idea may inspire you. Check details before making a commitment."},
+{name:"Cancer",hi:"कर्क",emoji:"♋",colour:"White",number:2,reading:"Make space for rest and honest communication. You do not have to solve everything at once."},
+{name:"Leo",hi:"सिंह",emoji:"♌",colour:"Gold",number:1,reading:"Use confidence constructively. Appreciate teamwork and let your actions speak clearly."},
+{name:"Virgo",hi:"कन्या",emoji:"♍",colour:"Navy",number:5,reading:"Organising one pending task can bring relief. Be helpful without expecting perfection."},
+{name:"Libra",hi:"तुला",emoji:"♎",colour:"Pink",number:6,reading:"Look for balance in a decision. Listen carefully while keeping your own needs in view."},
+{name:"Scorpio",hi:"वृश्चिक",emoji:"♏",colour:"Maroon",number:8,reading:"Focus your energy on what you can influence. Avoid assumptions; ask direct questions."},
+{name:"Sagittarius",hi:"धनु",emoji:"♐",colour:"Purple",number:3,reading:"Stay curious and open to learning. Make a realistic plan before taking a big step."},
+{name:"Capricorn",hi:"मकर",emoji:"♑",colour:"Brown",number:8,reading:"Patience and consistency are useful. Review your priorities and protect time for rest."},
+{name:"Aquarius",hi:"कुंभ",emoji:"♒",colour:"Sky blue",number:4,reading:"A fresh perspective may help. Share ideas respectfully and turn one into a practical action."},
+{name:"Pisces",hi:"मीन",emoji:"♓",colour:"Sea green",number:7,reading:"Make room for creativity while staying grounded. Clear boundaries can support caring relationships."}
+];
+const grid=document.getElementById('zodiacGrid');
+grid.innerHTML=signs.map((s,i)=>`<div class="card zodiac" role="button" tabindex="0" onclick="showRashi(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){showRashi(${i})}"><span class="emoji">${s.emoji}</span><strong>${s.name}</strong><div>${s.hi}</div><p>Tap to read</p></div>`).join('');
+function showRashi(i){const s=signs[i];document.getElementById('rashiResult').textContent=`${s.emoji} ${s.name} (${s.hi})\n\nGeneral reflection: ${s.reading}\n\nLove: Communicate with kindness.\nCareer: Focus on one achievable priority.\nWellbeing: Keep a steady routine and rest.\nMoney: Review needs before spending.\nLucky colour: ${s.colour} · Lucky number: ${s.number}\n\nGeneral reading for reflection only; not calculated from live planetary positions.`}
+function fillSelect(id){document.getElementById(id).innerHTML=signs.map(s=>`<option value="${s.name}">${s.name} (${s.hi})</option>`).join('')}
+['signOne','signTwo','luckySign'].forEach(fillSelect);
+function makeBirthProfile(){let n=document.getElementById('birthName').value.trim(),d=document.getElementById('birthDate').value,t=document.getElementById('birthTime').value,p=document.getElementById('birthPlace').value.trim();if(!d||!t||!p){document.getElementById('kundliResult').textContent='Please enter date, time and place of birth.';return}document.getElementById('kundliResult').textContent=`Birth profile${n?' for '+n:''}\nDate: ${d}\nTime: ${t}\nPlace: ${p}\n\nYour details are ready for a full chart calculation. This demo does not calculate Lagna, Rashi, Nakshatra, planetary houses or Dasha.`}
+function marriageGuide(){let status=document.getElementById('maritalStatus').value,topic=document.getElementById('marriageType').value;let advice={'Marriage readiness':'Consider emotional readiness, shared values, finances, mutual respect and whether both people freely want marriage.','Love marriage':'Discuss long-term goals, family expectations, boundaries and how you handle disagreements.','Arranged marriage':'Take enough time to know each other. Ask about work, finances, family roles, children and personal goals.','Communication and compatibility':'Listen without interrupting, speak honestly and notice whether both people can resolve conflict respectfully.','Family expectations':'Set respectful boundaries and make major decisions together rather than under pressure.'};document.getElementById('marriageResult').textContent=`Status: ${status}\nTopic: ${topic}\n\n${advice[topic]}\n\nThere is no reliable way to promise an exact marriage date or outcome.`}
+function matchGuide(){let a=document.getElementById('personOne').value.trim()||'Person 1',b=document.getElementById('personTwo').value.trim()||'Person 2',s1=document.getElementById('signOne').value,s2=document.getElementById('signTwo').value;document.getElementById('matchResult').textContent=`Compatibility discussion: ${a} (${s1}) + ${b} (${s2})\n\nTalk together about communication, trust, lifestyle, money, family expectations and future plans. Notice how you handle disagreements and respect each other's choices.\n\nThis is a conversation guide, not a calculated horoscope score or a prediction of marriage success.`}
+function previewPalm(e){const f=e.target.files&&e.target.files[0],img=document.getElementById('palmPreview');if(!f)return;if(!f.type.startsWith('image/'))return;img.src=URL.createObjectURL(f);img.style.display='block'}
+function futureGuide(){let topic=document.getElementById('futureTopic').value;let tips={'Career and education':'Choose one skill to strengthen, set a weekly learning target and ask for feedback.','Money and savings':'Track spending, build an emergency buffer if possible and compare options before borrowing or investing.','Love and family':'Make time for honest conversations. Healthy relationships include respect, trust and consent.','Health and wellbeing':'Prioritise sleep, balanced meals and movement. Speak with a qualified professional about health concerns.','Personal growth':'Choose a small habit you can repeat consistently. Progress is built through practice.','Travel and new experiences':'Check your budget, documents and safety needs before planning a trip.'};document.getElementById('futureResult').textContent=`${topic}\n\n${tips[topic]}\n\nYour future is shaped by many factors and choices; this is practical reflection, not fortune-telling.`}
+function numerology(){let v=document.getElementById('numDate').value;if(!v){document.getElementById('numResult').textContent='Enter your date of birth first.';return}let sum=v.replaceAll('-','').split('').reduce((a,b)=>a+Number(b),0);while(sum>9&&sum!==11&&sum!==22&&sum!==33)sum=String(sum).split('').reduce((a,b)=>a+Number(b),0);document.getElementById('numResult').textContent=`Your numerology-style life path number: ${sum}\nThis is a traditional numerology calculation for entertainment, not a scientific personality test.`}
+function luckyDetails(){let s=signs.find(x=>x.name===document.getElementById('luckySign').value);document.getElementById('luckyResult').textContent=`${s.name}: traditional playful association\nColour: ${s.colour}\nNumber: ${s.number}\nThese are general zodiac associations, not personalised predictions.`}
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
