@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Celestial Guide — Animated Astrology App</title>
+  <style>
+    :root {
+      --bg-dark: #070913;
+      --card-bg: rgba(19, 24, 48, 0.75);
+      --gold: #f5d061;
+      --gold-glow: rgba(245, 208, 97, 0.4);
+      --purple: #7b42f6;
+      --text-main: #f0f2ff;
+      --text-muted: #9da6cc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #141a38 0%, var(--bg-dark) 80%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+
+    /* Animated Starfield Canvas */
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    header {
+      text-align: center;
+      z-index: 1;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    header p {
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    /* Main Container */
+    .app-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      max-width: 1000px;
+      width: 100%;
+      align-items: center;
+      z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Spinning Zodiac Wheel */
+    .wheel-wrapper {
+      position: relative;
+      width: 340px;
+      height: 340px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .outer-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1px dashed rgba(245, 208, 97, 0.35);
+      animation: spinSlow 45s linear infinite;
+    }
+
+    .inner-ring {
+      position: absolute;
+      width: 68%;
+      height: 68%;
+      border-radius: 50%;
+      border: 1px solid rgba(123, 66, 246, 0.5);
+      box-shadow: 0 0 30px rgba(123, 66, 246, 0.25) inset;
+      animation: spinReverse 30s linear infinite;
+    }
+
+    .center-orb {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #2a1b54 0%, #0d1126 100%);
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 25px var(--gold-glow);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .center-orb span {
+      font-size: 2.2rem;
+    }
+
+    .center-orb small {
+      font-size: 0.7rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Zodiac Nodes placed in a circle */
+    .zodiac-wheel {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      animation: spinSlow 60s linear infinite;
+    }
+
+    .zodiac-wheel:hover {
+      animation-play-state: paused;
+    }
+
+    .sign-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 48px;
+      height: 48px;
+      margin: -24px;
+      border-radius: 50%;
+      background: #141936;
+      border: 1px solid rgba(245, 208, 97, 0.4);
+      color: var(--text-main);
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+
+    .sign-btn:hover,
+    .sign-btn.active {
+      background: var(--gold);
+      color: #070913;
+      box-shadow: 0 0 18px var(--gold);
+      transform: var(--pos) scale(1.2) !important;
+    }
+
+    /* Keep icons upright while wheel rotates */
+    .sign-icon {
+      display: inline-block;
+      animation: spinReverse 60s linear infinite;
+    }
+
+    .zodiac-wheel:hover .sign-icon {
+      animation-play-state: paused;
+    }
+
+    /* Reading Card */
+    .reading-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(245, 208, 97, 0.25);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .reading-card.fade {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-title h2 {
+      font-size: 1.8rem;
+      color: var(--gold);
+    }
+
+    .card-title span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .element-badge {
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(123, 66, 246, 0.25);
+      border: 1px solid var(--purple);
+      color: #d8c7ff;
+    }
+
+    .horoscope-text {
+      line-height: 1.7;
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+      color: #e2e6ff;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+      text-align: center;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.75rem;
+      border-radius: 12px;
+    }
+
+    .stat-box small {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-box strong {
+      color: var(--gold);
+      font-size: 0.95rem;
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes spinReverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <header>
+    <h1>✦ CELESTIAL GUIDE ✦</h1>
+    <p>Select a sign on the cosmic wheel to reveal today's alignment</p>
+  </header>
+
+  <main class="app-container">
+    <!-- Animated Zodiac Wheel -->
+    <div class="wheel-wrapper">
+      <div class="outer-ring"></div>
+      <div class="inner-ring"></div>
+      <div class="center-orb">
+        <span id="orb-symbol">♌</span>
+        <small id="orb-name">Leo</small>
+      </div>
+      <div class="zodiac-wheel" id="wheel"></div>
+    </div>
+
+    <!-- Animated Horoscope Card -->
+    <section class="reading-card" id="reading-card">
+      <div class="card-header">
+        <div class="card-title">
+          <h2 id="sign-name">Leo</h2>
+          <span id="sign-dates">July 23 – August 22</span>
+        </div>
+        <div class="element-badge" id="sign-element">🔥 Fire Sign</div>
+      </div>
+
+      <p class="horoscope-text" id="horoscope-text">
+        Your natural charisma shines brightly today. Creative breakthroughs and bold conversations open doors you have been waiting to walk through. Trust your instincts when taking the lead.
+      </p>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <small>Ruling Planet</small>
+          <strong id="sign-planet">Sun</strong>
+        </div>
+        <div class="stat-box">
+          <small>Lucky Color</small>
+          <strong id="sign-color">Gold</strong>
+        </div>
+        <div class="stat-box">
+          <small>Compatibility</small>
+          <strong id="sign-match">Aries</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const zodiacData = [
+      { name: "Aries", symbol: "♈", dates: "Mar 21 – Apr 19", element: "🔥 Fire", planet: "Mars", color: "Crimson", match: "Leo", text: "Momentum builds around a personal passion project. Act decisively on a fresh idea before self-doubt creeps in." },
+      { name: "Taurus", symbol: "♉", dates: "Apr 20 – May 20", element: "🌿 Earth", planet: "Venus", color: "Emerald", match: "Virgo", text: "Grounding yourself in simple comforts restores your clarity. A steady financial or career move pays off soon." },
+      { name: "Gemini", symbol: "♊", dates: "May 21 – Jun 20", element: "💨 Air", planet: "Mercury", color: "Yellow", match: "Libra", text: "Curiosity leads to a meaningful connection. Share your ideas openly—someone nearby holds the missing piece." },
+      { name: "Cancer", symbol: "♋", dates: "Jun 21 – Jul 22", element: "💧 Water", planet: "Moon", color: "Silver", match: "Pisces", text: "Emotional intuition is heightened today. Prioritize inner peace and create space for honest conversations at home." },
+      { name: "Leo", symbol: "♌", dates: "Jul 23 – Aug 22", element: "🔥 Fire", planet: "Sun", color: "Gold", match: "Aries", text: "Your natural charisma shines brightly today. Creative breakthroughs and bold conversations open new doors." },
+      { name: "Virgo", symbol: "♍", dates: "Aug 23 – Sep 22", element: "🌿 Earth", planet: "Mercury", color: "Navy", match: "Taurus", text: "Attention to small details brings order to a hectic week. Simplify your schedule to make room for rest." },
+      { name: "Libra", symbol: "♎", dates: "Sep 23 – Oct 22", element: "💨 Air", planet: "Venus", color: "Rose", match: "Gemini", text: "Harmony returns to a key partnership. Express your needs gracefully and watch mutual understanding grow." },
+      { name: "Scorpio", symbol: "♏", dates: "Oct 23 – Nov 21", element: "💧 Water", planet: "Pluto", color: "Obsidian", match: "Cancer", text: "Transformation favors the fearless. Let go of outdated habits to make room for deeper focus and purpose." },
